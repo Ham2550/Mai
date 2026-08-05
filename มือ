@@ -1,0 +1,112 @@
+//@version=5
+indicator("MTF Stochastic RSI Matrix & Setup Alerts", overlay=true)
+
+// --- INPUTS ---
+stochLen = input.int(14, title="Stochastic Length")
+rsiLen   = input.int(14, title="RSI Length")
+kSmooth  = input.int(3,  title="K Smoothing")
+dSmooth  = input.int(3,  title="D Smoothing")
+
+// --- STOCHASTIC RSI CALCULATION FUNCTION ---
+// คำนวณในฟังก์ชันและส่งเข้า request.security เพื่อความแม่นยำในแต่ละ Timeframe
+f_calcStochRsi() =>
+    v_rsi = ta.rsi(close, rsiLen)
+    v_rsi_low  = ta.lowest(v_rsi, stochLen)
+    v_rsi_high = ta.highest(v_rsi, stochLen)
+    v_stoch    = (v_rsi_high - v_rsi_low) == 0 ? 0 : (v_rsi - v_rsi_low) / (v_rsi_high - v_rsi_low) * 100
+    v_k = ta.sma(v_stoch, kSmooth)
+    v_d = ta.sma(v_k, dSmooth)
+    [v_k, v_d]
+
+// --- FETCH DATA FOR 4 TIMEFRAMES (15m, 1h, 4h, 1D) ---
+[k_15m, d_15m] = request.security(syminfo.tickerid, "15",  f_calcStochRsi(), barmerge.gaps_off, barmerge.lookahead_off)
+[k_1h,  d_1h]  = request.security(syminfo.tickerid, "60",  f_calcStochRsi(), barmerge.gaps_off, barmerge.lookahead_off)
+[k_4h,  d_4h]  = request.security(syminfo.tickerid, "240", f_calcStochRsi(), barmerge.gaps_off, barmerge.lookahead_off)
+[k_1d,  d_1d]  = request.security(syminfo.tickerid, "D",   f_calcStochRsi(), barmerge.gaps_off, barmerge.lookahead_off)
+
+// --- SETUP CONDITIONS EVALUATION ---
+
+// ระดับ 1 (L1 - ความชัวร์ระดับเหลืองส้ม)
+buy_cond_1  = (k_1h < 7  and k_4h < 7)  or (k_1d < 7  and k_4h < 7)  or (k_1d < 7  and k_1h < 7)
+sell_cond_1 = (k_1h > 93 and k_4h > 93) or (k_1d > 93 and k_4h > 93) or (k_1d > 93 and k_1h > 93)
+
+// ระดับ 2 (L2 - ความชัวร์ระดับเหลือง)
+buy_cond_2  = (k_1h < 3  and d_1h < 15 and k_4h < 3  and d_4h < 15) or (k_1d < 3  and d_1d < 15 and k_4h < 3  and d_4h < 15) or (k_1h < 3  and d_1h < 15 and k_1d < 3  and d_1d < 15)
+sell_cond_2 = (k_1h > 97 and d_1h < 15 and k_4h > 97 and d_4h < 15) or (k_1d > 97 and d_1d < 15 and k_4h > 97 and d_4h < 15) or (k_1h > 97 and d_1h < 15 and k_1d > 97 and d_1d < 15)
+// หมายเหตุ: หากเงื่อนไข Sell L2 ต้องการเปลี่ยนเป็น d > 85 สามารถแก้ไขตัวเลข < 15 ด้านบนได้ทันที
+
+// ระดับ 3 (L3 - ความชัวร์ระดับเขียว)
+buy_cond_3  = (k_1h < 3  and d_1h < 5  and k_4h < 3  and d_4h < 5)  or (k_1d < 3  and d_1d < 5  and k_4h < 3  and d_4h < 5)  or (k_1h < 3  and d_1h < 5  and k_1d < 3  and d_1d < 5)
+sell_cond_3 = (k_1h > 97 and d_1h > 95 and k_4h > 97 and d_4h > 95) or (k_1d > 97 and d_1d > 95 and k_4h > 97 and d_4h > 95) or (k_1h > 95 and d_1h > 95 and k_1d > 95 and d_1d > 95)
+
+// --- DETERMINE SETUP & CONFIDENCE LEVEL ---
+string setup_text  = "NEUTRAL"
+color  setup_color = color.gray
+color  conf_color  = color.gray
+string conf_text   = "-"
+
+// ลำดับการตรวจสอบเริ่มจากเงื่อนไขที่รัดกุมที่สุด (L3 -> L2 -> L1)
+if sell_cond_3
+    setup_text  := "SELL SETUP"
+    setup_color := color.rgb(255, 105, 180) // สีชมพู (Sell)
+    conf_color  := color.green              // ความชัวร์: เขียว
+    conf_text   := "High (L3)"
+else if sell_cond_2
+    setup_text  := "SELL SETUP"
+    setup_color := color.rgb(255, 105, 180) // สีชมพู (Sell)
+    conf_color  := color.yellow             // ความชัวร์: เหลือง
+    conf_text   := "Medium (L2)"
+else if sell_cond_1
+    setup_text  := "SELL SETUP"
+    setup_color := color.rgb(255, 105, 180) // สีชมพู (Sell)
+    conf_color  := color.orange             // ความชัวร์: เหลืองส้ม
+    conf_text   := "Low (L1)"
+else if buy_cond_3
+    setup_text  := "BUY SETUP"
+    setup_color := color.rgb(0, 191, 255)   // สีฟ้า (Buy)
+    conf_color  := color.green              // ความชัวร์: เขียว
+    conf_text   := "High (L3)"
+else if buy_cond_2
+    setup_text  := "BUY SETUP"
+    setup_color := color.rgb(0, 191, 255)   // สีฟ้า (Buy)
+    conf_color  := color.yellow             // ความชัวร์: เหลือง
+    conf_text   := "Medium (L2)"
+else if buy_cond_1
+    setup_text  := "BUY SETUP"
+    setup_color := color.rgb(0, 191, 255)   // สีฟ้า (Buy)
+    conf_color  := color.orange             // ความชัวร์: เหลืองส้ม
+    conf_text   := "Low (L1)"
+
+// --- DASHBOARD TABLE ---
+var table mtfTable = table.new(position = position.top_right, columns = 3, rows = 6, bgcolor = color.new(color.black, 15), border_width = 1, border_color = color.gray)
+
+if barstate.islast
+    // Header Row
+    table.cell(mtfTable, 0, 0, "Timeframe", text_color=color.white, text_size=size.small, bgcolor=color.darkgray)
+    table.cell(mtfTable, 1, 0, "%K",        text_color=color.white, text_size=size.small, bgcolor=color.darkgray)
+    table.cell(mtfTable, 2, 0, "%D",        text_color=color.white, text_size=size.small, bgcolor=color.darkgray)
+    
+    // 15m Row
+    table.cell(mtfTable, 0, 1, "15m", text_color=color.white, text_size=size.small)
+    table.cell(mtfTable, 1, 1, str.tostring(math.round(k_15m, 1)), text_color=color.white, text_size=size.small)
+    table.cell(mtfTable, 2, 1, str.tostring(math.round(d_15m, 1)), text_color=color.white, text_size=size.small)
+
+    // 1h Row
+    table.cell(mtfTable, 0, 2, "1h",  text_color=color.white, text_size=size.small)
+    table.cell(mtfTable, 1, 2, str.tostring(math.round(k_1h, 1)),  text_color=color.white, text_size=size.small)
+    table.cell(mtfTable, 2, 2, str.tostring(math.round(d_1h, 1)),  text_color=color.white, text_size=size.small)
+
+    // 4h Row
+    table.cell(mtfTable, 0, 3, "4h",  text_color=color.white, text_size=size.small)
+    table.cell(mtfTable, 1, 3, str.tostring(math.round(k_4h, 1)),  text_color=color.white, text_size=size.small)
+    table.cell(mtfTable, 2, 3, str.tostring(math.round(d_4h, 1)),  text_color=color.white, text_size=size.small)
+
+    // 1D Row
+    table.cell(mtfTable, 0, 4, "1D",  text_color=color.white, text_size=size.small)
+    table.cell(mtfTable, 1, 4, str.tostring(math.round(k_1d, 1)),  text_color=color.white, text_size=size.small)
+    table.cell(mtfTable, 2, 4, str.tostring(math.round(d_1d, 1)),  text_color=color.white, text_size=size.small)
+
+    // Setup Status & Confidence Row
+    table.cell(mtfTable, 0, 5, "Status",    text_color=color.white, text_size=size.small, bgcolor=color.darkgray)
+    table.cell(mtfTable, 1, 5, setup_text,  text_color=color.black, text_size=size.small, bgcolor=setup_color)
+    table.cell(mtfTable, 2, 5, conf_text,   text_color=color.black, text_size=size.small, bgcolor=conf_color)
