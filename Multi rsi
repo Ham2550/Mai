@@ -224,9 +224,9 @@ else if alert_ext_sell
 var table mtfTable = table.new(position = position.top_right, columns = 3, rows = 7, bgcolor = color.new(color.black, 15), border_width = 1, border_color = color.gray)
 
 if barstate.islast
-    table.cell(mtfTable, 0, 0, "Timeframe", text_color=color.white, text_size=size.small, bgcolor=color.darkgray)
-    table.cell(mtfTable, 1, 0, "%K",        text_color=color.white, text_size=size.small, bgcolor=color.darkgray)
-    table.cell(mtfTable, 2, 0, "%D",        text_color=color.white, text_size=size.small, bgcolor=color.darkgray)
+    table.cell(mtfTable, 0, 0, "Timeframe", text_color=color.white, text_size=size.small, bgcolor=color.gray)
+    table.cell(mtfTable, 1, 0, "%K",        text_color=color.white, text_size=size.small, bgcolor=color.gray)
+    table.cell(mtfTable, 2, 0, "%D",        text_color=color.white, text_size=size.small, bgcolor=color.gray)
     
     table.cell(mtfTable, 0, 1, "15m", text_color=color.white, text_size=size.small)
     table.cell(mtfTable, 1, 1, str.tostring(math.round(k_15m, 2)), text_color=color.white, text_size=size.small)
@@ -248,9 +248,9 @@ if barstate.islast
     table.cell(mtfTable, 1, 5, setup_text,  text_color=color.black, text_size=size.small, bgcolor=setup_color)
     table.cell(mtfTable, 2, 5, conf_text,   text_color=color.black, text_size=size.small, bgcolor=conf_color)
 
-    table.cell(mtfTable, 0, 6, "Extreme Check", text_color=color.white, text_size=size.small, bgcolor=color.darkgray)
+    table.cell(mtfTable, 0, 6, "Extreme Check", text_color=color.white, text_size=size.small, bgcolor=color.gray)
     table.cell(mtfTable, 1, 6, extreme_text,    text_color=color.black, text_size=size.small, bgcolor=extreme_col)
-    table.cell(mtfTable, 2, 6, "-",             text_color=color.white, text_size=size.small, bgcolor=color.darkgray)
+    table.cell(mtfTable, 2, 6, "-",             text_color=color.white, text_size=size.small, bgcolor=color.gray)
 
 // ==========================================
 // --- RENDER TABLE ---
@@ -258,9 +258,9 @@ if barstate.islast
 var table mtfTable = table.new(position = position.top_right, columns = 3, rows = 7, bgcolor = color.new(color.black, 15), border_width = 1, border_color = color.gray)
 
 if barstate.islast
-    table.cell(mtfTable, 0, 0, "Timeframe", text_color=color.white, text_size=size.small, bgcolor=color.darkgray)
-    table.cell(mtfTable, 1, 0, "%K",        text_color=color.white, text_size=size.small, bgcolor=color.darkgray)
-    table.cell(mtfTable, 2, 0, "%D",        text_color=color.white, text_size=size.small, bgcolor=color.darkgray)
+    table.cell(mtfTable, 0, 0, "Timeframe", text_color=color.white, text_size=size.small, bgcolor=color.gray)
+    table.cell(mtfTable, 1, 0, "%K",        text_color=color.white, text_size=size.small, bgcolor=color.gray)
+    table.cell(mtfTable, 2, 0, "%D",        text_color=color.white, text_size=size.small, bgcolor=color.gray)
     
     table.cell(mtfTable, 0, 1, "15m", text_color=color.white, text_size=size.small)
     table.cell(mtfTable, 1, 1, str.tostring(math.round(k_15m, 2)), text_color=color.white, text_size=size.small)
@@ -282,6 +282,6 @@ if barstate.islast
     table.cell(mtfTable, 1, 5, setup_text,  text_color=color.black, text_size=size.small, bgcolor=setup_color)
     table.cell(mtfTable, 2, 5, conf_text,   text_color=color.black, text_size=size.small, bgcolor=conf_color)
 
-    table.cell(mtfTable, 0, 6, "Extreme Check", text_color=color.white, text_size=size.small, bgcolor=color.darkgray)
+    table.cell(mtfTable, 0, 6, "Extreme Check", text_color=color.white, text_size=size.small, bgcolor=color.gray)
     table.cell(mtfTable, 1, 6, extreme_text,    text_color=color.black, text_size=size.small, bgcolor=extreme_col)
-    table.cell(mtfTable, 2, 6, "-",             text_color=color.white, text_size=size.small, bgcolor=color.darkgray)
+    table.cell(mtfTable, 2, 6, "-",             text_color=color.white, text_size=size.small, bgcolor=color.gray)
