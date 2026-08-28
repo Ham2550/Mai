@@ -147,12 +147,12 @@ var table mtfTable = table.new(position = position.top_right, columns = 6, rows 
 
 if barstate.islast
     // Header
-    table.cell(mtfTable, 0, 0, "TF",       text_color=color.white, text_size=size.small, bgcolor=color.darkgray)
-    table.cell(mtfTable, 1, 0, "%K",       text_color=color.white, text_size=size.small, bgcolor=color.darkgray)
-    table.cell(mtfTable, 2, 0, "%D",       text_color=color.white, text_size=size.small, bgcolor=color.darkgray)
-    table.cell(mtfTable, 3, 0, "K Dir",    text_color=color.white, text_size=size.small, bgcolor=color.darkgray)
-    table.cell(mtfTable, 4, 0, "D Dir",    text_color=color.white, text_size=size.small, bgcolor=color.darkgray)
-    table.cell(mtfTable, 5, 0, "K vs D",   text_color=color.white, text_size=size.small, bgcolor=color.darkgray)
+    table.cell(mtfTable, 0, 0, "TF",       text_color=color.white, text_size=size.small, bgcolor=color.gray)
+    table.cell(mtfTable, 1, 0, "%K",       text_color=color.white, text_size=size.small, bgcolor=color.gray)
+    table.cell(mtfTable, 2, 0, "%D",       text_color=color.white, text_size=size.small, bgcolor=color.gray)
+    table.cell(mtfTable, 3, 0, "K Dir",    text_color=color.white, text_size=size.small, bgcolor=color.gray)
+    table.cell(mtfTable, 4, 0, "D Dir",    text_color=color.white, text_size=size.small, bgcolor=color.gray)
+    table.cell(mtfTable, 5, 0, "K vs D",   text_color=color.white, text_size=size.small, bgcolor=color.gray)
     
     // 15m
     table.cell(mtfTable, 0, 1, "15m", text_color=color.white, text_size=size.small)
@@ -187,17 +187,17 @@ if barstate.islast
     table.cell(mtfTable, 5, 4, f_getPosText(k_1d, d_1d),  text_color=f_getPosColor(k_1d, d_1d),  text_size=size.small)
 
     // Status Row
-    table.cell(mtfTable, 0, 5, "Status",    text_color=color.white, text_size=size.small, bgcolor=color.darkgray)
+    table.cell(mtfTable, 0, 5, "Status",    text_color=color.white, text_size=size.small, bgcolor=color.gray)
     table.cell(mtfTable, 1, 5, setup_text,  text_color=color.black, text_size=size.small, bgcolor=setup_color)
     table.cell(mtfTable, 2, 5, conf_text,   text_color=color.black, text_size=size.small, bgcolor=conf_color)
-    table.cell(mtfTable, 3, 5, "-",         text_color=color.white, text_size=size.small, bgcolor=color.darkgray)
-    table.cell(mtfTable, 4, 5, "-",         text_color=color.white, text_size=size.small, bgcolor=color.darkgray)
-    table.cell(mtfTable, 5, 5, "-",         text_color=color.white, text_size=size.small, bgcolor=color.darkgray)
+    table.cell(mtfTable, 3, 5, "-",         text_color=color.white, text_size=size.small, bgcolor=color.gray)
+    table.cell(mtfTable, 4, 5, "-",         text_color=color.white, text_size=size.small, bgcolor=color.gray)
+    table.cell(mtfTable, 5, 5, "-",         text_color=color.white, text_size=size.small, bgcolor=color.gray)
 
     // Extreme Check Row
-    table.cell(mtfTable, 0, 6, "Extreme",   text_color=color.white, text_size=size.small, bgcolor=color.darkgray)
+    table.cell(mtfTable, 0, 6, "Extreme",   text_color=color.white, text_size=size.small, bgcolor=color.gray)
     table.cell(mtfTable, 1, 6, extreme_text,text_color=color.black, text_size=size.small, bgcolor=extreme_col)
-    table.cell(mtfTable, 2, 6, "-",         text_color=color.white, text_size=size.small, bgcolor=color.darkgray)
-    table.cell(mtfTable, 3, 6, "-",         text_color=color.white, text_size=size.small, bgcolor=color.darkgray)
-    table.cell(mtfTable, 4, 6, "-",         text_color=color.white, text_size=size.small, bgcolor=color.darkgray)
-    table.cell(mtfTable, 5, 6, "-",         text_color=color.white, text_size=size.small, bgcolor=color.darkgray)
+    table.cell(mtfTable, 2, 6, "-",         text_color=color.white, text_size=size.small, bgcolor=color.gray)
+    table.cell(mtfTable, 3, 6, "-",         text_color=color.white, text_size=size.small, bgcolor=color.gray)
+    table.cell(mtfTable, 4, 6, "-",         text_color=color.white, text_size=size.small, bgcolor=color.gray)
+    table.cell(mtfTable, 5, 6, "-",         text_color=color.white, text_size=size.small, bgcolor=color.gray)
