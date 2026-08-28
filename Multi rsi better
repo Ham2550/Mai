@@ -54,8 +54,8 @@ buy_cond_3  = (k_1h <= 2  and k_4h <= 2  and d_1h <= 5  and d_4h <= 5)  or (k_1d
 sell_cond_3 = (k_1h >= 97 and k_4h >= 98 and d_1h >= 95 and d_4h >= 95) or (k_1d >= 99 and k_4h >= 98 and d_1d >= 95 and d_4h >= 95) or (k_1h >= 97 and k_1d >= 99 and d_1h >= 95 and d_1d >= 95)
 
 // 4. เงื่อนไขพิเศษ (Extreme Alert)
-any_extreme_buy  = (k_15m <= 1  and d_15m <= 5)  or (k_1h <= 1  and d_1h <= 5)  or (k_4h <= 1  and d_4h <= 5)  or (k_1d <= 1  and d_1d <= 5)
-any_extreme_sell = (k_15m >= 99 and d_15m >= 95) or (k_1h >= 99 and d_1h >= 95) or (k_4h >= 99 and d_4h >= 95) or (k_1d >= 99 and d_1d >= 95)
+any_extreme_buy  = (k_1h <= 1  and d_1h <= 5)  or (k_4h <= 1  and d_4h <= 5)  or (k_1d <= 1  and d_1d <= 5)
+any_extreme_sell = (k_1h >= 99 and d_1h >= 95) or (k_4h >= 99 and d_4h >= 95) or (k_1d >= 99 and d_1d >= 95)
 
 // ==========================================
 // --- DETERMINE DISPLAY STATUS ---
@@ -119,24 +119,25 @@ alert_sell_1 = ta.change(bool(sell_cond_1)) and sell_cond_1
 alert_ext_buy  = ta.change(bool(any_extreme_buy)) and any_extreme_buy
 alert_ext_sell = ta.change(bool(any_extreme_sell)) and any_extreme_sell
 
+// ใช้รูปแบบข้อความที่รองรับการส่งเข้า Discord Webhook โดยตรง (ใช้โครงสร้าง Key "content" หรือ JSON ที่ถูกต้อง)
 if alert_buy_3
-    alert('{"symbol": "' + syminfo.ticker + '", "tf": "' + timeframe.period + '", "setup": "BUY", "level": "L3 (High)", "message": "🚀 [BUY SETUP HIGH/L3] สัญญาณซื้อความชัวร์สูง"}', alert.freq_once_per_bar)
+    alert('{"content": null, "embeds": [{"title": "🚀 [BUY SETUP HIGH/L3]", "description": "สัญญาณซื้อความชัวร์สูง", "color": 39423, "fields": [{"name": "Symbol", "value": "' + syminfo.ticker + '", "inline": true}, {"name": "Timeframe", "value": "' + timeframe.period + '", "inline": true}]}]}', alert.freq_once_per_bar)
 else if alert_buy_2
-    alert('{"symbol": "' + syminfo.ticker + '", "tf": "' + timeframe.period + '", "setup": "BUY", "level": "L2 (Medium)", "message": "⚡ [BUY SETUP MED/L2] สัญญาณซื้อความชัวร์ปานกลาง"}', alert.freq_once_per_bar)
+    alert('{"content": null, "embeds": [{"title": "⚡ [BUY SETUP MED/L2]", "description": "สัญญาณซื้อความชัวร์ปานกลาง", "color": 65535, "fields": [{"name": "Symbol", "value": "' + syminfo.ticker + '", "inline": true}, {"name": "Timeframe", "value": "' + timeframe.period + '", "inline": true}]}]}', alert.freq_once_per_bar)
 else if alert_buy_1
-    alert('{"symbol": "' + syminfo.ticker + '", "tf": "' + timeframe.period + '", "setup": "BUY", "level": "L1 (Low)", "message": "🔔 [BUY SETUP LOW/L1] สัญญาณซื้อเริ่มต้น"}', alert.freq_once_per_bar)
+    alert('{"content": null, "embeds": [{"title": "🔔 [BUY SETUP LOW/L1]", "description": "สัญญาณซื้อเริ่มต้น", "color": 16753920, "fields": [{"name": "Symbol", "value": "' + syminfo.ticker + '", "inline": true}, {"name": "Timeframe", "value": "' + timeframe.period + '", "inline": true}]}]}', alert.freq_once_per_bar)
 
 if alert_sell_3
-    alert('{"symbol": "' + syminfo.ticker + '", "tf": "' + timeframe.period + '", "setup": "SELL", "level": "L3 (High)", "message": "💥 [SELL SETUP HIGH/L3] สัญญาณขายความชัวร์สูง"}', alert.freq_once_per_bar)
+    alert('{"content": null, "embeds": [{"title": "💥 [SELL SETUP HIGH/L3]", "description": "สัญญาณขายความชัวร์สูง", "color": 16711782, "fields": [{"name": "Symbol", "value": "' + syminfo.ticker + '", "inline": true}, {"name": "Timeframe", "value": "' + timeframe.period + '", "inline": true}]}]}', alert.freq_once_per_bar)
 else if alert_sell_2
-    alert('{"symbol": "' + syminfo.ticker + '", "tf": "' + timeframe.period + '", "setup": "SELL", "level": "L2 (Medium)", "message": "⚠️ [SELL SETUP MED/L2] สัญญาณขายความชัวร์ปานกลาง"}', alert.freq_once_per_bar)
+    alert('{"content": null, "embeds": [{"title": "⚠️ [SELL SETUP MED/L2]", "description": "สัญญาณขายความชัวร์ปานกลาง", "color": 16776960, "fields": [{"name": "Symbol", "value": "' + syminfo.ticker + '", "inline": true}, {"name": "Timeframe", "value": "' + timeframe.period + '", "inline": true}]}]}', alert.freq_once_per_bar)
 else if alert_sell_1
-    alert('{"symbol": "' + syminfo.ticker + '", "tf": "' + timeframe.period + '", "setup": "SELL", "level": "L1 (Low)", "message": "🔔 [SELL SETUP LOW/L1] สัญญาณขายเริ่มต้น"}', alert.freq_once_per_bar)
+    alert('{"content": null, "embeds": [{"title": "🔔 [SELL SETUP LOW/L1]", "description": "สัญญาณขายเริ่มต้น", "color": 16753920, "fields": [{"name": "Symbol", "value": "' + syminfo.ticker + '", "inline": true}, {"name": "Timeframe", "value": "' + timeframe.period + '", "inline": true}]}]}', alert.freq_once_per_bar)
 
 if alert_ext_buy
-    alert('{"symbol": "' + syminfo.ticker + '", "tf": "' + timeframe.period + '", "setup": "EXTREME", "level": "Oversold", "message": "🟢 [EXTREME BUY] ตลาด Oversold สุดขีดในบาง Timeframe!"}', alert.freq_once_per_bar)
+    alert('{"content": "🟢 **[EXTREME BUY]** ตลาด Oversold สุดขีดใน ' + syminfo.ticker + ' (" + timeframe.period + ")!"}', alert.freq_once_per_bar)
 else if alert_ext_sell
-    alert('{"symbol": "' + syminfo.ticker + '", "tf": "' + timeframe.period + '", "setup": "EXTREME", "level": "Overbought", "message": "🔴 [EXTREME SELL] ตลาด Overbought สุดขีดในบาง Timeframe!"}', alert.freq_once_per_bar)
+    alert('{"content": "🔴 **[EXTREME SELL]** ตลาด Overbought สุดขีดใน ' + syminfo.ticker + ' (' + timeframe.period + ')!"}', alert.freq_once_per_bar)
 
 // ==========================================
 // --- RENDER TABLE ---
